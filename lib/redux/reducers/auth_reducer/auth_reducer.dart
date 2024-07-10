@@ -36,7 +36,7 @@ AuthState _returnPrevState(AuthState state, AuthBack action) {
       initial: (state) => state, 
       emailCodeConfirm: (state) => EmailConfirm(email: state.email), 
       emailConfirm: (state) => const UnAuthorized(email: '', password: ''), 
-      registration: (state) => EmailCodeConfirm(email: state.email), 
+      registration: (state) => EmailConfirm(email: state.email),
       authorize: (state) => state
   );
 }
