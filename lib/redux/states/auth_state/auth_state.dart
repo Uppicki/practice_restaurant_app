@@ -25,6 +25,7 @@ class AuthState with _$AuthState {
 
   const factory AuthState.registration({
     required String name,
+    required String secondName,
     required String email,
     required String password,
     required String repeatPassword,

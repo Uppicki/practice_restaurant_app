@@ -46,6 +46,7 @@ dependencies:
   redux_thunk: ^0.4.0
   redux: ^5.0.0
   flutter_redux: ^0.10.0
+  pin_code_fields: ^8.0.1
 
 dev_dependencies:
   flutter_test:

@@ -18,15 +18,15 @@ class ProfileFragmentManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state is UnAuthorized) {
-      return LoginFragment(state: state as UnAuthorized);
+      return LoginFragment();
     } else if (state is EmailConfirm) {
-      return EmailFragment(state:  state as EmailConfirm);
+      return EmailFragment();
     } else if (state is EmailCodeConfirm) {
-      return EmailCodeFragment(state:  state as EmailCodeConfirm);
+      return EmailCodeFragment();
     } else if (state is RegistrationState) {
-      return RegistrationFragment(state: state as RegistrationState);
+      return RegistrationFragment();
     } else if (state is Authorized) {
-      return ProfileFragment(state:  state as Authorized);
+      return ProfileFragment();
     }
     return const Placeholder();
   }

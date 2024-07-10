@@ -17,15 +17,16 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: AutoTabsScaffold(
-          routes: [ReservationRoute(), CatalogRoute(), HistoryRoute(), ProfileRoute()],
+          //routes: [ReservationRoute(), CatalogRoute(), HistoryRoute(), ProfileRoute()],
           bottomNavigationBuilder: (_, tabsRouter) =>
           BottomNavigationBar(
               currentIndex: tabsRouter.activeIndex,
               onTap: tabsRouter.setActiveIndex,
               items: [
                 BottomNavigationBarItem(
-                    label: 'Бронь',
-                    icon: Icon(Icons.access_alarm)
+                  label: 'Бронь',
+                  icon: Icon(Icons.access_alarm, color: Colors.green),
+                  activeIcon: Icon(Icons.access_alarm, color: Colors.black)
                 ),
                 BottomNavigationBarItem(
                   label: 'Каталог',

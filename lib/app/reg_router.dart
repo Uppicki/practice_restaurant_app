@@ -3,6 +3,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:practice/app/theme_app.dart';
 import 'package:practice/router/app_router.dart';
 
 class RegRouter extends StatelessWidget {
@@ -14,11 +15,10 @@ class RegRouter extends StatelessWidget {
 
     return MaterialApp.router(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: getTheme(),
       routerConfig: _router.config(),
+
+      debugShowCheckedModeBanner: false,
     );
   }
 }

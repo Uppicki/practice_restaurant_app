@@ -12,6 +12,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AuthState>(
+      distinct: true,
         builder: (_, wm) => ProfileFragmentManager(state: wm),
         converter: (store) => store.state.authState,
     );

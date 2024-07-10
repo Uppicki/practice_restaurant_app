@@ -21,17 +21,17 @@ class AppRouter extends _$AppRouter {
           initial: true,
           children: [
             AutoRoute(
-              page: CatalogRoute.page,
-              initial: true
-            ),
-            AutoRoute(
                 page: ReservationRoute.page
             ),
             AutoRoute(
-                page: ProfileRoute.page
+                page: CatalogRoute.page,
             ),
             AutoRoute(
                 page: HistoryRoute.page
+            ),
+            AutoRoute(
+                page: ProfileRoute.page,
+              initial: true
             ),
           ],
         )

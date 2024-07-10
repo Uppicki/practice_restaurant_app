@@ -15,20 +15,17 @@ class AuthAction with _$AuthAction {
 
   const factory AuthAction.confirmEmail({
     required String email,
-    required String code,
-}) = ConfirmEmail;
+}) = EmailConfirmAction;
 
-  const factory AuthAction.registration({
-    required String name,
-    required String email,
-    required String password,
-    required String repeatPassword,
-}) = Registration;
+  const factory AuthAction.registration() = RegistrationAction;
 
   const factory AuthAction.authorization({
     required String email,
-    required String password
-}) = Authorization;
+    required String accessToken,
+    required String refreshToken,
+}) = AuthorizationAction;
 
-  const factory AuthAction.logout() = Logout;
+  const factory AuthAction.logout() = LogoutAction;
+
+  const factory AuthAction.error({required String error}) = ReturnErrorAction;
 }
