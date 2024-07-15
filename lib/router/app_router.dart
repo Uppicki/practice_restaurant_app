@@ -2,9 +2,10 @@
 
 
 import 'package:auto_route/auto_route.dart';
+import 'package:practice/ui/order_navigation_screen/order_navigation_screen.dart';
 import 'package:practice/ui/pages/catalog_navigation_screen/catalog_navigation_screen.dart';
 import 'package:practice/ui/pages/restaurant_product_list_screen/restaurant_product_list_screen.dart';
-import 'package:practice/ui/pages/history_screen/history_screen.dart';
+import 'package:practice/ui/pages/order_screen/order_screen.dart';
 import 'package:practice/ui/pages/home_screen/home_screen.dart';
 import 'package:practice/ui/pages/product_screen/product_screen.dart';
 import 'package:practice/ui/pages/profile_screen/profile_screen.dart';
@@ -28,9 +29,7 @@ class AppRouter extends _$AppRouter {
                 page: ReservationRoute.page
             ),
             _catalogRoutes,
-            AutoRoute(
-                page: HistoryRoute.page
-            ),
+            _orderRoutes,
             AutoRoute(
                 page: ProfileRoute.page
             ),
@@ -41,7 +40,6 @@ class AppRouter extends _$AppRouter {
 
 
 final _catalogRoutes = AutoRoute(
-    initial: true,
     page: CatalogNavigationRoute.page,
     children: [
       AutoRoute(
@@ -58,4 +56,12 @@ final _catalogRoutes = AutoRoute(
           page: ProductRoute.page
       ),
     ]
+);
+final _orderRoutes = AutoRoute(
+  initial: true,
+  page: OrderNavigationRoute.page,
+  children: [
+    AutoRoute(page: OrderRoute.page, initial: true),
+    AutoRoute(page: ProductRoute.page)
+  ]
 );
