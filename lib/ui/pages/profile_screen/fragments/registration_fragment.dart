@@ -67,96 +67,100 @@ class _RegistrationFragmentState extends State<RegistrationFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => store.dispatch(AuthBack()),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => store.dispatch(AuthBack()),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => store.dispatch(AuthBack()),
+          ),
+          title: Text('Регистрация'),
         ),
-        title: Text('Регистрация'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: TextField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Введите email',
-                      ),
-                      readOnly: true,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: TextField(
-                      controller: firstNameController,
-                      decoration: InputDecoration(
-                        labelText: ('Введите имя'),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Введите email',
+                        ),
+                        readOnly: true,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: TextField(
-                      controller: secondNameController,
-                      decoration: InputDecoration(
-                        labelText: ('Введите фамилию'),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextField(
+                        controller: firstNameController,
+                        decoration: InputDecoration(
+                          labelText: ('Введите имя'),
+                        ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: PasswordField(
-                      controller: passwordController,
-                      labelText: 'Введите пароль',
-                    )
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: PasswordField(
-                      controller: repeatPasswordController,
-                      labelText: 'Повторите пароль',
-                    ),
-                  ),
-                  if (_state.error != null) Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      _state.error!,
-                      style: TextStyle(
-                          color: Colors.red
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: TextField(
+                        controller: secondNameController,
+                        decoration: InputDecoration(
+                          labelText: ('Введите фамилию'),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: PasswordField(
+                        controller: passwordController,
+                        labelText: 'Введите пароль',
+                      )
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: PasswordField(
+                        controller: repeatPasswordController,
+                        labelText: 'Повторите пароль',
+                      ),
+                    ),
+                    if (_state.error != null) Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Text(
+                        _state.error!,
+                        style: TextStyle(
+                            color: Colors.red
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  store.dispatch(regUser(
-                      email: _state.email,
-                      password: passwordController.text,
-                      repeatPassword: repeatPasswordController.text,
-                      firstName: firstNameController.text,
-                      lastName: secondNameController.text
-                  ));
-                },
-                child: Text('Регистрация'),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    store.dispatch(regUser(
+                        email: _state.email,
+                        password: passwordController.text,
+                        repeatPassword: repeatPasswordController.text,
+                        firstName: firstNameController.text,
+                        lastName: secondNameController.text
+                    ));
+                  },
+                  child: Text('Регистрация'),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

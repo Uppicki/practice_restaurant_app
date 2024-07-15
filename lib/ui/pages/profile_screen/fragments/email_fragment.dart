@@ -51,52 +51,56 @@ class _EmailFragmentState extends State<EmailFragment> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => store.dispatch(AuthBack()),
-        ),
-        title: Text('Регистрация'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Введите email',
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  _state.error ?? '',
-                  style: TextStyle(
-                    color: Colors.red
-                  ),
-                ),
-              ),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (_) => store.dispatch(AuthBack()),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => store.dispatch(AuthBack()),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  store.dispatch(sendEmail(emailController.text));
-                },
-                child: Text('Отправить'),
+          title: Text('Регистрация'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Введите email',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    _state.error ?? '',
+                    style: TextStyle(
+                      color: Colors.red
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    store.dispatch(sendEmail(emailController.text));
+                  },
+                  child: Text('Отправить'),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

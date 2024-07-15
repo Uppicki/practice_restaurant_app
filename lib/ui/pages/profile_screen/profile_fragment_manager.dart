@@ -20,39 +20,18 @@ class ProfileFragmentManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = StoreProvider.of<AppState>(context);
-
-    return state.map(
-        initial: (_) => LoginFragment(),
-        emailCodeConfirm: (_) => PopScope(
-            canPop: false,
-            onPopInvoked: (_) => store.dispatch(AuthBack()),
-            child: EmailCodeFragment()
-        ),
-        emailConfirm: (_) => PopScope(
-          canPop: false,
-          onPopInvoked: (_) => store.dispatch(AuthBack()),
-          child: EmailFragment()
-        ),
-        registration: (_) => PopScope(
-            canPop: false,
-            onPopInvoked: (_) => store.dispatch(AuthBack()),
-            child: RegistrationFragment())
-        ,
-        authorize: (_) => ProfileFragment()
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      child: state.map(
+          initial: (_) => LoginFragment(),
+          emailCodeConfirm: (_) => EmailCodeFragment(),
+          emailConfirm: (_) => EmailFragment(),
+          registration: (_) => RegistrationFragment(),
+          authorize: (_) => ProfileFragment()
+      ),
     );
-
-    if (state is UnAuthorized) {
-      return LoginFragment();
-    } else if (state is EmailConfirm) {
-      return EmailFragment();
-    } else if (state is EmailCodeConfirm) {
-      return EmailCodeFragment();
-    } else if (state is RegistrationState) {
-      return RegistrationFragment();
-    } else if (state is Authorized) {
-      return ProfileFragment();
-    }
-    return const Placeholder();
   }
 }

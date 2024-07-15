@@ -35,7 +35,6 @@ Dio _initDio() {
   const timeout = Duration(seconds: 30);
 
   final dio = Dio();
-
   const String baseUrl = "https://restaurant-seven-beryl.vercel.app";
 
   dio.options
