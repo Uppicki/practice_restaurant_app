@@ -47,6 +47,7 @@ dependencies:
   redux: ^5.0.0
   flutter_redux: ^0.10.0
   pin_code_fields: ^8.0.1
+  flutter_bloc: ^8.1.6
 
 dev_dependencies:
   flutter_test:

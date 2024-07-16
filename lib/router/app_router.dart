@@ -40,6 +40,7 @@ class AppRouter extends _$AppRouter {
 
 
 final _catalogRoutes = AutoRoute(
+  initial: true,
     page: CatalogNavigationRoute.page,
     children: [
       AutoRoute(
@@ -58,7 +59,6 @@ final _catalogRoutes = AutoRoute(
     ]
 );
 final _orderRoutes = AutoRoute(
-  initial: true,
   page: OrderNavigationRoute.page,
   children: [
     AutoRoute(page: OrderRoute.page, initial: true),
