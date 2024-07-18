@@ -25,7 +25,7 @@ class ApiClient {
       _apiClient = ApiClient._(
         dio,
         authClient: AuthClient(dio),
-        catalogClient: CatalogClient()
+        catalogClient: CatalogClient(dio)
   );
     }
 

@@ -2,12 +2,12 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice/bloc/restaurant_chains_bloc/restaurant_chains_bloc.dart';
-import 'package:practice/router/app_router.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_product_screen.dart';
-import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_fragment_manager.dart';
+import 'package:practice/app/init_api_client.dart';
+import 'package:practice/bloc/list_loading_bloc/list_loading_bloc.dart';
+import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/ui/fragment/progress_indicator_fragment.dart';
+import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_fragments/chain_empty_list.dart';
 import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_fragments/chain_list_fragment.dart';
-
 
 @RoutePage()
 class RestaurantChainsScreen extends StatelessWidget
@@ -16,31 +16,34 @@ class RestaurantChainsScreen extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final bloc = context.read<RestaurantChainsBloc>();
-    bloc.add(RestaurantChainsEvent.loadChains());
+    print('asd');
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Продукты'),
-      ),
-      body: BlocBuilder<RestaurantChainsBloc, RestaurantChainsState>(
-        bloc: bloc,
-        builder: (context, state) {
-          return fragmentManager(state);
-        },
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Сеть ресторанов'),
+        ),
+        body: BlocBuilder<ListLoadingBloc<RestaurantChain>,
+            ListLoadingState<RestaurantChain>>(
+          bloc: context.read<ListLoadingBloc<RestaurantChain>>(),
+          builder: (context, state) => _fragmentManager(state),
+        ));
   }
 
   @override
   Widget wrappedRoute(BuildContext context) {
+    final bloc = ListLoadingBloc<RestaurantChain>(
+        requestCallback: ApiClient.client.catalogClient.getRests);
+    bloc.add(ListLoadingEvent.loadItems());
+
     return BlocProvider(
-      create: (_) => RestaurantChainsBloc(),
+      create: (_) => bloc,
       child: this,
     );
   }
 }
 
-
-
-
+Widget _fragmentManager(ListLoadingState<RestaurantChain> state) => state.map(
+    initial: (_) => const ChainEmptyList(),
+    loading: (_) => const ProgressIndicatorFragment(),
+    loaded: (state) => ChainListFragment(state: state),
+    empty: (_) => const ChainEmptyList());

@@ -4,39 +4,22 @@
 
 import 'dart:core';
 
+
+import 'package:dio/dio.dart';
+import 'package:practice/models/restaurant/restaurant.dart';
+import 'package:practice/models/restaurant_category/restaurant_category.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:retrofit/http.dart';
 
+
+@RestApi()
 class CatalogClient {
-  _CatalogRepository catalogRepository = _CatalogRepository();
+  factory CatalogClient(Dio dio, {String baseUrl}) = CatalogClient;
 
-  Future<List<RestaurantChain>> getRests() async {
-    return await catalogRepository.getRests();
-  }
+  Future<List<RestaurantChain>> getRests();
+
+  Future<List<Restaurant>> getRestsByChain();
 
 }
 
-
-
-
-class _CatalogRepository {
-  static List<RestaurantChain> rests = [
-    RestaurantChain(
-        id: 10,
-      name: "Вкусно и точка",
-      imageUrl: 'https://storage.googleapis.com/restaurant-app-c6238.appspot.com/vkusno.png',
-      unique: true,
-    ),
-    RestaurantChain(
-        id: 20,
-        imageUrl: 'https://storage.googleapis.com/restaurant-app-c6238.appspot.com/burger_king.jpg',
-        name: 'Бургер ',
-        unique: false
-    )
-  ];
-
-  Future<List<RestaurantChain>> getRests() async {
-    await  Future.delayed(const Duration(milliseconds: 100));
-    return rests;
-  }
-}
 

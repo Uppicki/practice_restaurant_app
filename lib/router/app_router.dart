@@ -2,8 +2,8 @@
 
 
 import 'package:auto_route/auto_route.dart';
-import 'package:practice/ui/order_navigation_screen/order_navigation_screen.dart';
 import 'package:practice/ui/pages/catalog_navigation_screen/catalog_navigation_screen.dart';
+import 'package:practice/ui/pages/order_navigation_screen/order_navigation_screen.dart';
 import 'package:practice/ui/pages/restaurant_product_list_screen/restaurant_product_list_screen.dart';
 import 'package:practice/ui/pages/order_screen/order_screen.dart';
 import 'package:practice/ui/pages/home_screen/home_screen.dart';
