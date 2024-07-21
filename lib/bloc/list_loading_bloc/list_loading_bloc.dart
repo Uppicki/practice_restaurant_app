@@ -1,8 +1,9 @@
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:practice/app/init_api_client.dart';
+import 'package:practice/payload/responses/category_list_response/category_list_response.dart';
+import 'package:practice/payload/responses/restaurant_chain_list_response/restaurant_chain_list_response.dart';
+import 'package:practice/payload/responses/restaurant_list_response/restaurant_list_response.dart';
 
 part 'list_loading_event.dart';
 
@@ -11,7 +12,7 @@ part 'list_loading_state.dart';
 part 'list_loading_bloc.freezed.dart';
 
 class ListLoadingBloc<T> extends Bloc<ListLoadingEvent, ListLoadingState<T>> {
-  final Future<List<T>> Function() requestCallback;
+  final Future<dynamic> Function({dynamic request}) requestCallback;
 
   ListLoadingBloc({required this.requestCallback})
       : super(const ListLoadingState.initial()) {
@@ -21,12 +22,24 @@ class ListLoadingBloc<T> extends Bloc<ListLoadingEvent, ListLoadingState<T>> {
     });
   }
 
-  _loadItems(
-      _LoadItemsEvent event, Emitter<ListLoadingState<T>> emitter) async {
+  _loadItems(_LoadItemsEvent event,
+      Emitter<ListLoadingState<T>> emitter) async {
     emitter(const ListLoadingState.loading());
-    final res = await requestCallback();
-    res.isEmpty
-        ? emitter(const ListLoadingState.empty())
-        : emitter(ListLoadingState.loaded(list: res));
+
+    final res = (event.loadingRequest != null) ?
+    await requestCallback(request: event.loadingRequest) :
+    await requestCallback(request: null);
+
+
+    if (res is RestaurantChainListResponse) {
+      res.items.isEmpty ? emitter(const ListLoadingState.empty())
+          : emitter(ListLoadingState.loaded(list: res.items as List<T>));
+    } else if (res is RestaurantListResponse) {
+      res.items.isEmpty ? emitter(const ListLoadingState.empty())
+          : emitter(ListLoadingState.loaded(list: res.items as List<T>));
+    } else if (res is CategoryListResponse) {
+      res.items.isEmpty ? emitter(const ListLoadingState.empty())
+          : emitter(ListLoadingState.loaded(list: res.items as List<T>));
+    }
   }
 }

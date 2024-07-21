@@ -1,15 +1,23 @@
-
-
-
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice/app/init_api_client.dart';
 import 'package:practice/bloc/catalog_bloc/catalog_bloc.dart';
+import 'package:practice/bloc/list_loading_bloc/list_loading_bloc.dart';
+import 'package:practice/models/restaurant_category/restaurant_category.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/payload/requests/item_by_chain_request/item_by_chain_request.dart';
+import 'package:practice/payload/requests/restaurant_get_request/restaurant_get_request.dart';
 import 'package:practice/router/app_router.dart';
 import 'package:practice/ui/cards/short_card.dart';
+import 'package:practice/ui/fragment/progress_indicator_fragment.dart';
 import 'package:practice/ui/fragment/restaurant_field_fragment.dart';
+import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
+import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
+import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
+import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_list_fragment.dart';
+import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/restaurant_notification_fragment.dart';
 
 
 @RoutePage()
@@ -18,7 +26,6 @@ class RestaurantCategoryProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("asd 3");
     final bloc = context.read<CatalogBloc>();
 
     return Scaffold(
@@ -29,29 +36,37 @@ class RestaurantCategoryProductScreen extends StatelessWidget {
         physics: const ClampingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            automaticallyImplyLeading: false,
-            expandedHeight: 300,
-            flexibleSpace: Image.network(
-              (bloc.state as ChangedChainState).restaurantChain.imageUrl,
-                      fit: BoxFit.fitWidth,
-            )
+              automaticallyImplyLeading: false,
+              expandedHeight: 300,
+              flexibleSpace: Image.network(
+                (bloc.state as ChangedChainState).restaurantChain.imageUrl,
+                fit: BoxFit.fitWidth,
+              )
           ),
           BlocBuilder<CatalogBloc, CatalogState>(
-            bloc: bloc,
+              bloc: bloc,
               builder: (_, state) {
-              if (state is ChangedChainState ) {
-                return RestaurantFieldFragment(
-                  restaurantChain: state.restaurantChain,
-                  blocFunction: bloc.add,
-                  eventFunction: CatalogEvent.changeRestaurant,
-                  restaurant: state.restaurant,
-                );
-              } else {
+                if (state is ChangedChainState) {
+                  return RestaurantFieldFragment(
+                    restaurantChain: state.restaurantChain,
+                    blocFunction: bloc.add,
+                    eventFunction: CatalogEvent.changeRestaurant,
+                    restaurant: state.restaurant,
+                  );
+                } else {
+                  return SliverToBoxAdapter(child: Center());
+                }
+              }
+          ),
+          BlocBuilder<CatalogBloc, CatalogState>(
+              bloc: bloc,
+              builder: (_, state) {
+                if (state is ChangedChainState) {
+                  return _fragmentManager(state);
+                }
                 return SliverToBoxAdapter(child: Center());
               }
-            }
-          )
-
+          ),
         ],
       ),
     );
@@ -59,5 +74,45 @@ class RestaurantCategoryProductScreen extends StatelessWidget {
 }
 
 
+Widget _fragmentManager(ChangedChainState state) {
+  if (state.restaurantChain.hasUniqueRestaurants && state.restaurant == null) {
+    return const RestaurantNotificationFragment();
+  } else {
+    final bloc = ListLoadingBloc<RestaurantCategory>(
+        requestCallback: ({dynamic request}) =>
+            ApiClient.client.catalogClient.getCategory(request: request)
+    );
 
 
+    state.restaurantChain.hasUniqueRestaurants ?
+    bloc.add(ListLoadingEvent.loadItems(loadingRequest: RestaurantGetRequest(
+        restaurantId: state.restaurant!.id))) :
+    bloc.add(ListLoadingEvent.loadItems(loadingRequest: RestaurantGetRequest(
+        restaurantChainId: state.restaurantChain.id)));
+
+    return BlocProvider(
+      create: (_) => bloc,
+      child: BlocBuilder<ListLoadingBloc<RestaurantCategory>,
+          ListLoadingState<RestaurantCategory>>(
+          bloc: bloc,
+          builder: (context, state) {
+            return state.map(
+                initial: (_) =>
+                const SliverToBoxAdapter(
+                  child: CategoryEmptyList(),
+                ),
+                loading: (_) =>
+                const SliverToBoxAdapter(
+                  child: ProgressIndicatorFragment(),
+                ),
+                loaded: (state) => CategoryListFragment(state: state),
+                empty: (_) =>
+                const SliverToBoxAdapter(
+                  child: CategoryEmptyList(),
+                )
+            );
+          }
+      ),
+    );
+  }
+}

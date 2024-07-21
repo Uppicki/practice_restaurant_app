@@ -5,6 +5,8 @@ import 'package:practice/app/init_api_client.dart';
 import 'package:practice/bloc/list_loading_bloc/list_loading_bloc.dart';
 import 'package:practice/models/restaurant/restaurant.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/payload/empty_payload.dart';
+import 'package:practice/payload/requests/restaurant_get_request/restaurant_get_request.dart';
 import 'package:practice/ui/fragment/progress_indicator_fragment.dart';
 
 Future<Restaurant?> restaurantChangeDialog({
@@ -21,13 +23,15 @@ Future<Restaurant?> restaurantChangeDialog({
           return BlocProvider(
             create: (context) {
               final bloc = ListLoadingBloc<Restaurant>(
-                  requestCallback: ApiClient.client.catalogClient.getRestsByChain
+                  requestCallback: ({dynamic request}) => ApiClient.client.catalogClient.getRestaurant(request: request),
               );
 
-              bloc.add(ListLoadingEvent.loadItems());
+              bloc.add(ListLoadingEvent.loadItems(loadingRequest: RestaurantGetRequest(restaurantChainId: restaurantChain.id)));
 
               return bloc;
             },
+
+
             child: AlertDialog(
               title: Text('Выберите ресторан'),
               content: Container(

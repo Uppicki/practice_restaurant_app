@@ -14,7 +14,6 @@ class ChainListFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("asd 2");
     final catalogBloc = context.read<CatalogBloc>();
 
 
@@ -22,7 +21,7 @@ class ChainListFragment extends StatelessWidget {
       physics: const ClampingScrollPhysics(),
       slivers: [
         SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
           delegate: SliverChildBuilderDelegate(
