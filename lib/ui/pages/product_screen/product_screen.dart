@@ -1,11 +1,11 @@
-
-
-
-
-
-
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice/bloc/catalog_bloc/catalog_bloc.dart';
+import 'package:practice/models/product/product.dart';
+import 'package:practice/models/restaurant/restaurant.dart';
+import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/ui/fragment/order_item_fragment.dart';
 
 @RoutePage()
 class ProductScreen extends StatelessWidget {
@@ -13,93 +13,15 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Product Details'),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: ColoredBox(color: Colors.black,)),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-                  Text("name"),
-                  Text("description"),
-                  Text("price"),
-                  Text("category"),
-
-                  // Add more fields as needed
-                ],
-              )
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              children: [
-                Row(
-                children: [
-                  Expanded(
-                      flex: 3,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.remove)
-                          ),
-                          Text("count"),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.add)
-                          ),
-                        ],
-                      )
-                  ),
-                  Expanded(
-                      flex: 1,
-                      child: Text("Total cost")
-                  )
-                ],
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () { },
-                    child: Text('Добавить в корзину'),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      )
+    return BlocBuilder<CatalogBloc, CatalogState>(
+        builder: (_, state) =>
+          (state is ChangedProductState) ?
+              OrderItemFragment(
+                  restaurantChain: state.restaurantChain,
+                  restaurant: state.restaurant,
+                  product: state.product
+              ) :
+              Container(),
     );
   }
 }

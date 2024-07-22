@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:practice/payload/responses/category_list_response/category_list_response.dart';
+import 'package:practice/payload/responses/product_list_response/product_list_response.dart';
 import 'package:practice/payload/responses/restaurant_chain_list_response/restaurant_chain_list_response.dart';
 import 'package:practice/payload/responses/restaurant_list_response/restaurant_list_response.dart';
 
@@ -38,6 +39,9 @@ class ListLoadingBloc<T> extends Bloc<ListLoadingEvent, ListLoadingState<T>> {
       res.items.isEmpty ? emitter(const ListLoadingState.empty())
           : emitter(ListLoadingState.loaded(list: res.items as List<T>));
     } else if (res is CategoryListResponse) {
+      res.items.isEmpty ? emitter(const ListLoadingState.empty())
+          : emitter(ListLoadingState.loaded(list: res.items as List<T>));
+    } else if (res is ProductListResponse) {
       res.items.isEmpty ? emitter(const ListLoadingState.empty())
           : emitter(ListLoadingState.loaded(list: res.items as List<T>));
     }

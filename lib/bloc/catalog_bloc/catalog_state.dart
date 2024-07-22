@@ -19,4 +19,11 @@ class CatalogState with _$CatalogState {
     required RestaurantCategory category,
     Restaurant? restaurant,
   }) = ChangedCategoryState;
+
+  const factory CatalogState.changeProduct({
+    required RestaurantChain restaurantChain,
+    required RestaurantCategory category,
+    Restaurant? restaurant,
+    required Product product
+  }) = ChangedProductState;
 }

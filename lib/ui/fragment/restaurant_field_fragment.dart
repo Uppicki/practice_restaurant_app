@@ -21,6 +21,8 @@ class RestaurantFieldFragment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showRestaurantChangeDialog = !restaurantChain.hasUniqueRestaurants;
+
     return SliverAppBar(
       automaticallyImplyLeading: false,
       collapsedHeight: 80,
@@ -33,16 +35,16 @@ class RestaurantFieldFragment extends StatelessWidget {
           ),
           title: Text(restaurant?.id.toString() ?? 'Выберите ресторан'),
           subtitle: Text(restaurant?.id.toString() ?? 'Выберите ресторан'),
-          onTap: () async {
+          onTap: showRestaurantChangeDialog ? () async {
             final res = await restaurantChangeDialog(
                 context: context,
                 restaurantChain: restaurantChain,
                 restaurant: restaurant);
-            print(res);
+
             if (res!= null) {
               blocFunction(eventFunction(restaurant: res));
             }
-          },
+          } : () {},
         ),
       ),
       pinned: true,

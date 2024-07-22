@@ -10,7 +10,8 @@ class RestaurantGetRequest with _$RestaurantGetRequest {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory RestaurantGetRequest({
     int? restaurantId,
-    int? restaurantChainId
+    int? restaurantChainId,
+    int? categoryId
 }) = _RestaurantGetRequest;
 
 

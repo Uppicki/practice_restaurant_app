@@ -18,5 +18,10 @@ class CatalogEvent with _$CatalogEvent {
     required Restaurant restaurant,
   }) = _ChangeRestaurantEvent;
 
+  const factory CatalogEvent.changedProduct({
+    required Product product
+  }) = _ChangedProductEvent;
+
+
   const factory CatalogEvent.back() = _BackEvent;
 }
