@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 
 
 @RoutePage()
-class OrderNavigationScreen extends StatelessWidget {
-  const OrderNavigationScreen({super.key});
+class BasketNavigationScreen extends StatelessWidget {
+  const BasketNavigationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

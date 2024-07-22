@@ -6,18 +6,12 @@ import 'package:practice/app/init_api_client.dart';
 import 'package:practice/bloc/catalog_bloc/catalog_bloc.dart';
 import 'package:practice/bloc/list_loading_bloc/list_loading_bloc.dart';
 import 'package:practice/models/restaurant_category/restaurant_category.dart';
-import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
-import 'package:practice/payload/requests/item_by_chain_request/item_by_chain_request.dart';
 import 'package:practice/payload/requests/restaurant_get_request/restaurant_get_request.dart';
-import 'package:practice/router/app_router.dart';
-import 'package:practice/ui/cards/short_card.dart';
 import 'package:practice/ui/fragment/progress_indicator_fragment.dart';
 import 'package:practice/ui/fragment/restaurant_field_fragment.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/category_list_fragment.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_fragments/restaurant_notification_fragment.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_category_product_screen/restaurant_category_fragments/category_empty_list.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_category_product_screen/restaurant_category_fragments/category_list_fragment.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_category_product_screen/restaurant_category_fragments/restaurant_notification_fragment.dart';
 
 
 @RoutePage()

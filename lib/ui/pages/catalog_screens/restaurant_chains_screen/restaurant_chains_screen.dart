@@ -5,11 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practice/app/init_api_client.dart';
 import 'package:practice/bloc/list_loading_bloc/list_loading_bloc.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
-import 'package:practice/payload/empty_payload.dart';
 import 'package:practice/payload/requests/restaurant_get_request/restaurant_get_request.dart';
 import 'package:practice/ui/fragment/progress_indicator_fragment.dart';
-import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_fragments/chain_empty_list.dart';
-import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_fragments/chain_list_fragment.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_chains_screen/restaurant_chains_fragments/chain_empty_list.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_chains_screen/restaurant_chains_fragments/chain_list_fragment.dart';
 
 @RoutePage()
 class RestaurantChainsScreen extends StatelessWidget

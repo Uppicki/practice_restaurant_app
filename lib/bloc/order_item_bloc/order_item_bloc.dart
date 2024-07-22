@@ -14,7 +14,7 @@ class OrderItemBloc extends Bloc<OrderItemEvent, OrderItemState> {
     on<OrderItemEvent>((event, emit) {
       event.map(
           changeCount: (event) => emit(
-            state.copyWith(count: state.count + event.delta)
+            state.copyWith(count: (state.count + event.delta) > 0 ? state.count + event.delta : 0)
           )
       );
     });

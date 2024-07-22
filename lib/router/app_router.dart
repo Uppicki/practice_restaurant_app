@@ -2,16 +2,20 @@
 
 
 import 'package:auto_route/auto_route.dart';
-import 'package:practice/ui/pages/catalog_navigation_screen/catalog_navigation_screen.dart';
-import 'package:practice/ui/pages/order_navigation_screen/order_navigation_screen.dart';
-import 'package:practice/ui/pages/restaurant_product_list_screen/restaurant_product_list_screen.dart';
-import 'package:practice/ui/pages/order_screen/order_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:practice/models/product/product.dart';
+import 'package:practice/models/restaurant/restaurant.dart';
+import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/ui/pages/basket_screens/basket_navigation_screen/basket_navigation_screen.dart';
+import 'package:practice/ui/pages/basket_screens/basket_screen/basket_screen.dart';
+import 'package:practice/ui/pages/catalog_screens/catalog_navigation_screen/catalog_navigation_screen.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_category_product_screen/restaurant_category_product_screen.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_chains_screen/restaurant_chains_screen.dart';
+import 'package:practice/ui/pages/catalog_screens/restaurant_product_list_screen/restaurant_product_list_screen.dart';
 import 'package:practice/ui/pages/home_screen/home_screen.dart';
 import 'package:practice/ui/pages/product_screen/product_screen.dart';
 import 'package:practice/ui/pages/profile_screen/profile_screen.dart';
 import 'package:practice/ui/pages/reservation_screen/reservation_screen.dart';
-import 'package:practice/ui/pages/restaurant_category_product_screen/restaurant_category_product_screen.dart';
-import 'package:practice/ui/pages/restaurant_chains_screen/restaurant_chains_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -29,7 +33,7 @@ class AppRouter extends _$AppRouter {
                 page: ReservationRoute.page
             ),
             _catalogRoutes,
-            _orderRoutes,
+            _basketRoutes,
             AutoRoute(
                 page: ProfileRoute.page
             ),
@@ -58,10 +62,10 @@ final _catalogRoutes = AutoRoute(
       ),
     ]
 );
-final _orderRoutes = AutoRoute(
-  page: OrderNavigationRoute.page,
+final _basketRoutes = AutoRoute(
+  page: BasketNavigationRoute.page,
   children: [
-    AutoRoute(page: OrderRoute.page, initial: true),
+    AutoRoute(page: BasketRoute.page, initial: true),
     AutoRoute(page: ProductRoute.page)
   ]
 );
