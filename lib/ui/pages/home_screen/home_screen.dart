@@ -24,19 +24,19 @@ class HomeScreen extends StatelessWidget {
               onTap: tabsRouter.setActiveIndex,
               items: [
                 BottomNavigationBarItem(
-                  label: 'Бронь',
-                  icon: Icon(Icons.access_alarm, color: Colors.green),
-                  activeIcon: Icon(Icons.access_alarm, color: Colors.black)
-                ),
-                BottomNavigationBarItem(
                   label: 'Каталог',
-                  icon: SvgPicture.asset("assets/svg/Catalog.svg"),
-                  activeIcon: SvgPicture.asset("assets/svg/ActiveCatalog.svg"),
+                  icon: Image.asset("assets/images/catalog_disactive.png"),
+                  activeIcon: Image.asset("assets/images/catalog_active.png"),
                 ),
                 BottomNavigationBarItem(
                   label: 'Избранное',
                   icon: SvgPicture.asset("assets/svg/Favourite.svg"),
                   activeIcon: SvgPicture.asset("assets/svg/ActiveFavourite.svg"),
+                ),
+                BottomNavigationBarItem(
+                    label: 'Бронь',
+                    icon: Icon(Icons.access_alarm, color: Colors.green),
+                    activeIcon: Icon(Icons.access_alarm, color: Colors.black)
                 ),
                 BottomNavigationBarItem(
                   label: 'Профиль',

@@ -29,11 +29,11 @@ class AppRouter extends _$AppRouter {
           page: HomeRoute.page,
           initial: true,
           children: [
+            _catalogRoutes,
+            _basketRoutes,
             AutoRoute(
                 page: ReservationRoute.page
             ),
-            _catalogRoutes,
-            _basketRoutes,
             AutoRoute(
                 page: ProfileRoute.page
             ),
