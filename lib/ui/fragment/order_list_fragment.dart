@@ -4,20 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:practice/models/order_item/order_item.dart';
 import 'package:practice/models/restaurant/restaurant.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
+import 'package:practice/redux/states/basket_state/basket_state.dart';
 import 'package:practice/router/app_router.dart';
+import 'package:practice/ui/fragment/restaurant_chain_short_fragment.dart';
 
 class OrderListFragment extends StatelessWidget {
-  final RestaurantChain restaurantChain;
-  final Restaurant? restaurant;
-  final List<OrderItem> items;
-  final Decimal totalCost;
+  final FilledBasketState basket;
 
   const OrderListFragment({
     super.key,
-    required this.restaurantChain,
-    required this.restaurant,
-    required this.items,
-    required this.totalCost,
+    required this.basket,
   });
 
   @override
@@ -28,33 +24,30 @@ class OrderListFragment extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              ListTile(
-                leading: Image.network(restaurantChain.imageUrl),
-                title: Text(restaurantChain.name),
-              ),
+              RestaurantChainShortFragment(restaurantChain: basket.restaurantChain),
               Expanded(
                 child: ListView.builder(
-                    itemCount: items.length,
+                    itemCount: basket.items.length,
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Icon(Icons.build),
-                        title: Text("Товар ${items[index].product.name}"),
+                        title: Text("Товар ${basket.items[index].product.name}"),
                         subtitle: Row(
                           children: [
                             Expanded(
-                                child: Text("Кол-во: ${items[index].count}")),
+                                child: Text("Кол-во: ${basket.items[index].count}")),
                             Expanded(
                                 child:
-                                    Text("Цена: ${items[index].totalCost} P")),
+                                    Text("Цена: ${basket.items[index].totalCost} P")),
                           ],
                         ),
                         trailing: Icon(Icons.delete),
                         onTap: () async => await AutoRouter.of(context).push(
                             ProductRoute(
-                                restaurantChain: restaurantChain,
-                                restaurant: restaurant,
-                                product: items[index].product,
-                                count: items[index].count)),
+                                restaurantChain: basket.restaurantChain,
+                                restaurant: basket.restaurant,
+                                product: basket.items[index].product,
+                                count: basket.items[index].count)),
                       );
                     }),
               ),
@@ -63,12 +56,14 @@ class OrderListFragment extends StatelessWidget {
         ),
         SizedBox(
           width: double.infinity,
-          child: Text('Итого: ${totalCost} P')
+          child: Text('Итого: ${basket.totalCost} P')
         ),
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              AutoRouter.of(context).push(CheckOutRoute(basket: basket));
+            },
             child: Text('Оформить заказ'),
           ),
         )

@@ -23,10 +23,7 @@ class BasketScreen extends StatelessWidget {
           return state.map(
               initial: (_) => const EmptyBasketFragment(),
               filled: (state) => OrderListFragment(
-                restaurantChain: state.restaurantChain,
-                restaurant: state.restaurant,
-                items: state.items,
-                totalCost: state.totalCost,
+                basket: state,
               ),
           );
         }

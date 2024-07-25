@@ -10,9 +10,14 @@ final basketReducer = combineReducers<BasketState>([
   TypedReducer<BasketState, CreateBasketAction>(_createBasketReducer),
   TypedReducer<BasketState, ChangeRestaurantBasketAction>(_changeRestaurantBasketReducer),
   TypedReducer<BasketState, AddBasketAction>(_addBasketReducer),
-  TypedReducer<BasketState, RemoveBasketAction>(_removeBasketReducer)
+  TypedReducer<BasketState, RemoveBasketAction>(_removeBasketReducer),
+  TypedReducer<BasketState, ClearBasketAction>(_clearBasketReducer)
 ]);
 
+
+BasketState _clearBasketReducer(BasketState state, ClearBasketAction action) {
+  return BasketState.initial();
+}
 
 BasketState _createBasketReducer(BasketState state, CreateBasketAction action) {
   List<OrderItem> list = [OrderItem(

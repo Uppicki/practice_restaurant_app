@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:practice/api_clients/auth_client/auth_client.dart';
 import 'package:practice/api_clients/catalog_client/catalog_client.dart';
+import 'package:practice/api_clients/order_client/order_client.dart';
 
 initApiClient(){
   ApiClient.client;
@@ -15,8 +16,13 @@ class ApiClient {
 
   final AuthClient authClient;
   final CatalogClient catalogClient;
+  final OrderClient orderClient;
 
-  ApiClient._(this._dio, {required this.authClient, required this.catalogClient});
+  ApiClient._(this._dio, {
+    required this.authClient,
+    required this.catalogClient,
+    required this.orderClient
+  });
 
   static ApiClient get client {
     if (_apiClient == null) {
@@ -25,7 +31,8 @@ class ApiClient {
       _apiClient = ApiClient._(
         dio,
         authClient: AuthClient(dio),
-        catalogClient: CatalogClient(dio)
+        catalogClient: CatalogClient(dio),
+        orderClient:  OrderClient(dio)
   );
     }
 

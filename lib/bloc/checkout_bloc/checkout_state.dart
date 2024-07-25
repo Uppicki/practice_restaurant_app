@@ -2,15 +2,27 @@ part of 'checkout_bloc.dart';
 
 @freezed
 class CheckoutState with _$CheckoutState {
-  const factory CheckoutState.initial({Restaurant? restaurant}) = InitialChechoutState;
   const factory CheckoutState.delivery({
-    Restaurant? restaurant,
+    required RestaurantChain restaurantChain,
     required String address,
+    required List<OrderItem> items,
+    required Restaurant? restaurant,
+    required OrderType type,
+    String? error
 }) = DeliveryChechoutState;
+
   const factory CheckoutState.pickup({
-    required Restaurant restaurant,
+    required RestaurantChain restaurantChain,
+    required String address,
+    required List<OrderItem> items,
+    required Restaurant? restaurant,
+    required OrderType type,
+    String? error
 }) = PickupChechoutState;
 
-  factory CheckoutState.fromJson(Map<String, dynamic> json) =>
-      _$CheckoutStateFromJson(json);
+  const factory CheckoutState.upload({
+    required CheckoutState prevState,
+}) = UploadCheckoutState;
+
+  const factory CheckoutState.success() = SuccessCheckoutState;
 }

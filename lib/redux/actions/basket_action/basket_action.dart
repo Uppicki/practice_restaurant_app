@@ -27,4 +27,6 @@ class BasketAction with _$BasketAction {
   const factory BasketAction.remove({
     required Product item,
   }) = RemoveBasketAction;
+
+  const factory BasketAction.clear() = ClearBasketAction;
 }
