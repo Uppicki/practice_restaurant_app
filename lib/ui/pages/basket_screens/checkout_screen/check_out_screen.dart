@@ -125,11 +125,15 @@ Widget _fragmentFieldManager(CheckoutBloc bloc, CheckoutState state) =>
                 eventFunction: CheckoutEvent.changeAddress,
                 address: state.address),
         pickup: (state) =>
-            RestaurantFieldFragment(
-              restaurantChain: state.restaurantChain,
-              blocFunction: bloc.add,
-              eventFunction: CheckoutEvent.changeRestaurant,
-              restaurant: state.restaurant,
+            Flexible(
+              child: CustomScrollView(
+                slivers: [RestaurantFieldFragment(
+                  restaurantChain: state.restaurantChain,
+                  blocFunction: bloc.add,
+                  eventFunction: CheckoutEvent.changeRestaurant,
+                  restaurant: state.restaurant,
+                ),]
+              ),
             ),
         upload: (_) => Container(),
         success: (_) => Container());

@@ -12,7 +12,7 @@ part 'short_order_item.freezed.dart';
 @freezed
 class ShortOrderItem with _$ShortOrderItem {
   const factory ShortOrderItem({
-    required int product,
+    required int productId,
     required int quantity
   }) = _ShortOrderItem;
 

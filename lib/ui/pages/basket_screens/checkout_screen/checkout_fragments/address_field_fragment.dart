@@ -30,6 +30,8 @@ class _AddressFieldFragmentState extends State<AddressFieldFragment> {
 
   @override
   Widget build(BuildContext context) {
+    _controller.text = widget.address;
+
     return TextField(
       controller: _controller,
       onChanged: (value) => _onTextChanged(value),
@@ -42,7 +44,7 @@ class _AddressFieldFragmentState extends State<AddressFieldFragment> {
 
 
     _timer = Timer(_debounceDuration, () {
-      widget.blocFunction(widget.eventFunction(address: _controller));
+      widget.blocFunction(widget.eventFunction(address: _controller.text));
     });
   }
 
@@ -55,8 +57,8 @@ class _AddressFieldFragmentState extends State<AddressFieldFragment> {
 
   @override
   void initState() {
-
+    super.initState();
+    _controller = TextEditingController();
+    _timer = null;
   }
-
-
 }

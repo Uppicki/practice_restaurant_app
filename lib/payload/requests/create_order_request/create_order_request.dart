@@ -12,8 +12,8 @@ part 'create_order_request.g.dart';
 class CreateOrderRequest with _$CreateOrderRequest {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory CreateOrderRequest({
-    required int restaurantChain,
-    int? restaurant,
+    required int restaurantChainId,
+    int? restaurantId,
     required List<ShortOrderItem> items,
     required OrderType type,
     String? address,

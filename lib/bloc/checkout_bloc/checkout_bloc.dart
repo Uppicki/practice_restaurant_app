@@ -99,19 +99,19 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
 
     final request = innerState.mapOrNull(
         delivery: (state) => CreateOrderRequest(
-            restaurantChain: state.restaurantChain.id,
+            restaurantChainId: state.restaurantChain.id,
             items: state.items.map((item) => ShortOrderItem(
-                product: item.product.id,
+                productId: item.product.id,
                 quantity: item.count
             )).toList(),
             type: state.type,
           address: state.address
         ),
         pickup: (state) => CreateOrderRequest(
-            restaurantChain: state.restaurantChain.id,
-            restaurant: state.restaurant!.id,
+            restaurantChainId: state.restaurantChain.id,
+            restaurantId: state.restaurant!.id,
             items: state.items.map((item) => ShortOrderItem(
-                product: item.product.id,
+                productId: item.product.id,
                 quantity: item.count
             )).toList(),
             type: state.type,

@@ -166,7 +166,8 @@ Dio _initDio() {
     ..connectTimeout = timeout
     ..receiveTimeout = timeout
     ..sendTimeout = timeout
-    ..contentType = Headers.jsonContentType;
+    ..contentType = Headers.jsonContentType
+  ..headers['Referer'] = baseUrl;
 
   dio.interceptors.add(LogInterceptor(requestBody: true,
       responseBody: true));

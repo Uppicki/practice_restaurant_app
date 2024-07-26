@@ -13,12 +13,7 @@ class EmptyBasketFragment extends StatelessWidget {
           children: [
             Text(
                 'Корзина пуста, Вы можете добавить товары в корзину в Каталоге.',
-                textAlign: TextAlign.center),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text('Перейти в каталог'),
-            )
+                textAlign: TextAlign.center)
           ],
         ),
       ),

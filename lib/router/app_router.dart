@@ -16,9 +16,9 @@ import 'package:practice/ui/pages/catalog_screens/restaurant_category_product_sc
 import 'package:practice/ui/pages/catalog_screens/restaurant_chains_screen/restaurant_chains_screen.dart';
 import 'package:practice/ui/pages/catalog_screens/restaurant_product_list_screen/restaurant_product_list_screen.dart';
 import 'package:practice/ui/pages/home_screen/home_screen.dart';
+import 'package:practice/ui/pages/orders_screen/orders_screen.dart';
 import 'package:practice/ui/pages/product_screen/product_screen.dart';
 import 'package:practice/ui/pages/profile_screen/profile_screen.dart';
-import 'package:practice/ui/pages/reservation_screen/reservation_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -35,7 +35,7 @@ class AppRouter extends _$AppRouter {
             _catalogRoutes,
             _basketRoutes,
             AutoRoute(
-                page: ReservationRoute.page,
+                page: OrdersRoute.page,
               guards: [AuthGuard()]
             ),
             AutoRoute(
