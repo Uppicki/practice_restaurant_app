@@ -7,6 +7,7 @@ import 'package:practice/models/product/product.dart';
 import 'package:practice/models/restaurant/restaurant.dart';
 import 'package:practice/models/restaurant_chain/restaurant_chain.dart';
 import 'package:practice/redux/states/basket_state/basket_state.dart';
+import 'package:practice/router/auth_guard.dart';
 import 'package:practice/ui/pages/basket_screens/basket_navigation_screen/basket_navigation_screen.dart';
 import 'package:practice/ui/pages/basket_screens/basket_screen/basket_screen.dart';
 import 'package:practice/ui/pages/basket_screens/checkout_screen/check_out_screen.dart';
@@ -34,7 +35,8 @@ class AppRouter extends _$AppRouter {
             _catalogRoutes,
             _basketRoutes,
             AutoRoute(
-                page: ReservationRoute.page
+                page: ReservationRoute.page,
+              guards: [AuthGuard()]
             ),
             AutoRoute(
                 page: ProfileRoute.page
@@ -68,6 +70,10 @@ final _basketRoutes = AutoRoute(
   page: BasketNavigationRoute.page,
   children: [
     AutoRoute(page: BasketRoute.page, initial: true),
-    AutoRoute(page: ProductRoute.page)
+    AutoRoute(page: ProductRoute.page),
+    AutoRoute(
+        page: CheckOutRoute.page,
+      guards: [AuthGuard()]
+    ),
   ]
 );

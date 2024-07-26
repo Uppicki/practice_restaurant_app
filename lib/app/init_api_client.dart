@@ -1,6 +1,7 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:practice/api_clients/auth_client/auth_client.dart';
 import 'package:practice/api_clients/catalog_client/catalog_client.dart';
@@ -11,7 +12,6 @@ import 'package:practice/payload/requests/refresh_token_request/refresh_token_re
 import 'package:practice/payload/responses/login_response/login_response.dart';
 import 'package:practice/redux/actions/auth_action/auth_action.dart';
 import 'package:practice/redux/states/app_state.dart';
-import 'package:practice/redux/states/auth_state/auth_state.dart';
 import 'package:practice/repository/token_repository.dart';
 import 'package:practice/repository/token_storage.dart';
 import 'package:redux/redux.dart';
@@ -31,6 +31,8 @@ class ApiClient {
 
   late final Store<AppState> _store;
 
+  final AuthProvider _authProvider;
+
   final TokenRepository _tokenRepository;
 
   final AuthClient authClient;
@@ -42,29 +44,36 @@ class ApiClient {
     required this.authClient,
     required this.catalogClient,
     required this.orderClient
-  }) : _tokenRepository = tokenRepository {
+  }) : _tokenRepository = tokenRepository,
+        _authProvider = AuthProvider(){
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         final accessToken = await _tokenRepository.accessToken;
-        options.headers['Authorization'] = 'Bearer $accessToken';
+        if (accessToken != '') {
+          options.headers['Authorization'] = 'Bearer $accessToken';
+        }
+        return handler.next(options);
       },
       onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
           try {
             await _refreshToken();
+            return;
           } catch (e) {
-            _store.dispatch(const AuthAction.logout());
+            await deleteTokens();
           }
         }
-        return handler.next(error); // продолжить выполнение
+        return handler.next(error);
       },
     ));
-
-
-    _initAuthState();
   }
 
-  set store (Store<AppState> store) => _store = store;
+  AuthProvider get authProvider => _authProvider;
+
+  set store (Store<AppState> store) {
+    _store = store;
+    _initAuthState();
+  }
 
   static ApiClient get client {
     if (_apiClient == null) {
@@ -97,13 +106,13 @@ class ApiClient {
         )
     );
 
-    await _updateTokens(tokens);
+    await _updateTokens(tokens.access, refreshToken);
   }
 
-  Future<void> _updateTokens(LoginResponse tokens) async {
+  Future<void> _updateTokens(String access, String refresh) async {
     await _tokenRepository.updateTokens(
-        accessToken: tokens.access,
-        refreshToken: tokens.refresh
+        accessToken: access,
+        refreshToken: refresh
     );
   }
 
@@ -114,8 +123,16 @@ class ApiClient {
     );
 
     final response = await authClient.getProfile();
+    _authProvider.login();
 
     return response.user;
+  }
+
+  Future<void> deleteTokens() async {
+    await _tokenRepository.deleteTokens();
+
+    authProvider.logout();
+    _store.dispatch(const AuthAction.logout());
   }
 
 
@@ -129,7 +146,8 @@ class ApiClient {
 
     final response = await authClient.getProfile();
 
-    _store.dispatch(AuthState.authorize(profile: response.user));
+    _authProvider.login();
+    _store.dispatch(AuthAction.authorization(profile: response.user));
   }
 
 
@@ -164,4 +182,20 @@ Dio _initDio() {
 */
 
   return dio;
+}
+
+class AuthProvider extends ChangeNotifier{
+  bool _isLoggedIn = false;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  void login() {
+    _isLoggedIn = true;
+    notifyListeners();
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    notifyListeners();
+  }
 }

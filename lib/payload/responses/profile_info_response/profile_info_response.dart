@@ -10,6 +10,7 @@ part 'profile_info_response.freezed.dart';
 
 @freezed
 class ProfileInfoResponse with _$ProfileInfoResponse {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ProfileInfoResponse({
     required Profile user,
   }) = _ProfileInfoResponse;

@@ -8,6 +8,7 @@ import 'package:practice/payload/requests/refresh_token_request/refresh_token_re
 import 'package:practice/payload/requests/registration_request/registration_request.dart';
 import 'package:practice/payload/responses/login_response/login_response.dart';
 import 'package:practice/payload/responses/profile_info_response/profile_info_response.dart';
+import 'package:practice/payload/responses/refresh_response/refresh_response.dart';
 import 'package:retrofit/http.dart';
 
 
@@ -44,12 +45,12 @@ abstract class AuthClient{
 
 
   @POST(AuthUrl.refresh)
-  Future<LoginResponse> refreshToken({
+  Future<RefreshResponse> refreshToken({
     @Body() required RefreshRequest request,
   });
 
 
-  @POST(AuthUrl.profile)
+  @GET(AuthUrl.profile)
   Future<ProfileInfoResponse> getProfile();
 
 

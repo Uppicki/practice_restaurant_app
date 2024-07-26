@@ -94,3 +94,10 @@ ThunkAction login({
   } catch (e) {
   }
 };
+
+
+
+ThunkAction logoutThunkAction() => (Store store) async {
+  await ApiClient.client.deleteTokens();
+  store.dispatch(AuthAction.logout());
+};
