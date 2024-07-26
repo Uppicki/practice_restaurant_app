@@ -24,9 +24,7 @@ AuthState _logoutReducer(AuthState state, LogoutAction action) {
 
 AuthState _authReducer(AuthState state, AuthorizationAction action){
   return Authorized(
-      email: action.email,
-      accessToken: action.accessToken,
-      refreshToken: action.refreshToken
+      profile: action.profile
   );
 }
 

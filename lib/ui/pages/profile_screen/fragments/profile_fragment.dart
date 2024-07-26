@@ -11,14 +11,47 @@ class ProfileFragment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = StoreProvider.of<AppState>(context);
+
+    final profile = (store.state as Authorized).profile;
+
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              store.dispatch(LogoutAction());
-            },
-            child: Text('Выйти')
-        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Имя:'),
+                    Text(profile.firsName)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Фамилия:'),
+                    Text(profile.lastName)
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('email:'),
+                    Text(profile.email)
+                  ],
+                )
+              ],
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  store.dispatch(LogoutAction());
+                },
+                child: Text('Выйти')
+            ),
+          ],
+        )
       ),
     );
   }

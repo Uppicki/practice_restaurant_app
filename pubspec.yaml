@@ -48,6 +48,7 @@ dependencies:
   flutter_redux: ^0.10.0
   pin_code_fields: ^8.0.1
   flutter_bloc: ^8.1.6
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:

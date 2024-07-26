@@ -6,25 +6,18 @@ import 'package:practice/redux/states/app_state.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
-Widget regRedux({required Widget app}){
-  return _RegRedux(widget: app);
+Widget regRedux({required Widget app, required Store<AppState> store}){
+  return _RegRedux(widget: app, store: store);
 }
 
 
 class _RegRedux extends StatelessWidget {
   final Widget widget;
-  const _RegRedux({required this.widget});
+  final Store<AppState> store;
+  const _RegRedux({required this.widget, required this.store});
 
   @override
   Widget build(BuildContext context) {
-    final store = Store<AppState>(
-        appReducer,
-        initialState: AppState.initial(),
-      middleware: [
-        thunkMiddleware,
-      ]
-    );
-
     return StoreProvider(
         store: store,
         child: widget

@@ -4,8 +4,10 @@ import 'package:practice/payload/empty_payload.dart';
 import 'package:practice/payload/requests/email_part1_request/email_part1_request.dart';
 import 'package:practice/payload/requests/email_part2_request/email_part2_request.dart';
 import 'package:practice/payload/requests/login_request/login_request.dart';
+import 'package:practice/payload/requests/refresh_token_request/refresh_token_request.dart';
 import 'package:practice/payload/requests/registration_request/registration_request.dart';
 import 'package:practice/payload/responses/login_response/login_response.dart';
+import 'package:practice/payload/responses/profile_info_response/profile_info_response.dart';
 import 'package:retrofit/http.dart';
 
 
@@ -39,4 +41,16 @@ abstract class AuthClient{
   Future<LoginResponse> loginUser({
    @Body() required LoginRequest request,
  });
+
+
+  @POST(AuthUrl.refresh)
+  Future<LoginResponse> refreshToken({
+    @Body() required RefreshRequest request,
+  });
+
+
+  @POST(AuthUrl.profile)
+  Future<ProfileInfoResponse> getProfile();
+
+
 }

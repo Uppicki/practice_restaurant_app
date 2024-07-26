@@ -6,17 +6,25 @@ import 'package:flutter/material.dart';
 import 'package:practice/app/init_api_client.dart';
 import 'package:practice/app/reg_redux.dart';
 import 'package:practice/app/reg_router.dart';
+import 'package:practice/redux/reducers/app_reducer.dart';
+import 'package:practice/redux/states/app_state.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_thunk/redux_thunk.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+Widget initApp() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final store = Store<AppState>(
+      appReducer,
+      initialState: AppState.initial(),
+      middleware: [
+        thunkMiddleware,
+      ]
+  );
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    initApiClient();
-    Widget app = RegRouter();
-    app = regRedux(app: app);
+  initApiClient(store: store);
 
-    return app;
-  }
+  Widget app = const RegRouter();
+  app = regRedux(app: app, store: store);
+
+  return app;
 }

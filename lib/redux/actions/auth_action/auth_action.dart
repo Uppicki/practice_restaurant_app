@@ -2,6 +2,7 @@
 
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:practice/models/profile/profile.dart';
 
 part 'auth_action.freezed.dart';
 
@@ -20,9 +21,7 @@ class AuthAction with _$AuthAction {
   const factory AuthAction.registration() = RegistrationAction;
 
   const factory AuthAction.authorization({
-    required String email,
-    required String accessToken,
-    required String refreshToken,
+    required Profile profile,
 }) = AuthorizationAction;
 
   const factory AuthAction.logout() = LogoutAction;

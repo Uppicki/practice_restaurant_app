@@ -2,6 +2,7 @@
 
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:practice/models/profile/profile.dart';
 
 part 'auth_state.freezed.dart';
 
@@ -33,8 +34,6 @@ class AuthState with _$AuthState {
   }) = RegistrationState;
 
   const factory AuthState.authorize({
-    required String email,
-    required String accessToken,
-    required String refreshToken,
+    required Profile profile,
   }) = Authorized;
 }

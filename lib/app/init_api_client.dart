@@ -1,12 +1,27 @@
 
 
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:practice/api_clients/auth_client/auth_client.dart';
 import 'package:practice/api_clients/catalog_client/catalog_client.dart';
 import 'package:practice/api_clients/order_client/order_client.dart';
+import 'package:practice/app/recourse_strings.dart';
+import 'package:practice/models/profile/profile.dart';
+import 'package:practice/payload/requests/refresh_token_request/refresh_token_request.dart';
+import 'package:practice/payload/responses/login_response/login_response.dart';
+import 'package:practice/redux/actions/auth_action/auth_action.dart';
+import 'package:practice/redux/states/app_state.dart';
+import 'package:practice/redux/states/auth_state/auth_state.dart';
+import 'package:practice/repository/token_repository.dart';
+import 'package:practice/repository/token_storage.dart';
+import 'package:redux/redux.dart';
 
-initApiClient(){
-  ApiClient.client;
+
+
+initApiClient({required Store<AppState> store}){
+  final client = ApiClient.client;
+
+  client.store = store;
 }
 
 class ApiClient {
@@ -14,30 +29,111 @@ class ApiClient {
 
   final Dio _dio;
 
+  late final Store<AppState> _store;
+
+  final TokenRepository _tokenRepository;
+
   final AuthClient authClient;
   final CatalogClient catalogClient;
   final OrderClient orderClient;
 
   ApiClient._(this._dio, {
+    required TokenRepository tokenRepository,
     required this.authClient,
     required this.catalogClient,
     required this.orderClient
-  });
+  }) : _tokenRepository = tokenRepository {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        final accessToken = await _tokenRepository.accessToken;
+        options.headers['Authorization'] = 'Bearer $accessToken';
+      },
+      onError: (error, handler) async {
+        if (error.response?.statusCode == 401) {
+          try {
+            await _refreshToken();
+          } catch (e) {
+            _store.dispatch(const AuthAction.logout());
+          }
+        }
+        return handler.next(error); // продолжить выполнение
+      },
+    ));
+
+
+    _initAuthState();
+  }
+
+  set store (Store<AppState> store) => _store = store;
 
   static ApiClient get client {
     if (_apiClient == null) {
       final dio = _initDio();
 
+      final storage = FlutterSecureStorage();
+      final tokenStorage = TokenStorage(storage: storage);
+      final tokenRepository = TokenRepository(tokenStorage: tokenStorage);
+
+
       _apiClient = ApiClient._(
         dio,
+        tokenRepository: tokenRepository,
         authClient: AuthClient(dio),
         catalogClient: CatalogClient(dio),
         orderClient:  OrderClient(dio)
   );
+
     }
 
     return _apiClient!;
   }
+
+  Future<void> _refreshToken() async {
+    String refreshToken = await _tokenRepository.refreshToken;
+
+    final tokens = await authClient.refreshToken(
+        request: RefreshRequest(
+            refresh: refreshToken
+        )
+    );
+
+    await _updateTokens(tokens);
+  }
+
+  Future<void> _updateTokens(LoginResponse tokens) async {
+    await _tokenRepository.updateTokens(
+        accessToken: tokens.access,
+        refreshToken: tokens.refresh
+    );
+  }
+
+  Future<Profile> setTokens(LoginResponse tokens) async {
+    await _tokenRepository.updateTokens(
+        accessToken: tokens.access,
+        refreshToken: tokens.refresh
+    );
+
+    final response = await authClient.getProfile();
+
+    return response.user;
+  }
+
+
+
+  Future<void> _initAuthState() async {
+    final token = await _tokenRepository.accessToken;
+
+    if (token == '') {
+      return;
+    }
+
+    final response = await authClient.getProfile();
+
+    _store.dispatch(AuthState.authorize(profile: response.user));
+  }
+
+
+
 
 }
 
@@ -45,7 +141,7 @@ Dio _initDio() {
   const timeout = Duration(seconds: 30);
 
   final dio = Dio();
-  const String baseUrl = "https://restaurant-seven-beryl.vercel.app";
+  const String baseUrl = RecourseStrings.baseUrl;
 
   dio.options
     ..baseUrl = baseUrl
@@ -55,8 +151,7 @@ Dio _initDio() {
     ..contentType = Headers.jsonContentType;
 
   dio.interceptors.add(LogInterceptor(requestBody: true,
-      responseBody: true)); // Можно указать true, чтобы видеть и тело ответа
-
+      responseBody: true));
 /*
   dio.interceptors.add(AuthInterceptor());
 

@@ -75,19 +75,18 @@ ThunkAction login({
   required String email,
   required String password,
 }) => (Store store) async {
-  final authClient = ApiClient.client.authClient;
+  final apiClient = ApiClient.client;
 
   try{
-    final response = await authClient.loginUser(
+    final response = await apiClient.authClient.loginUser(
         request: LoginRequest(
           email: email,
           password: password,
         )
     );
+    final profile = await apiClient.setTokens(response);
     store.dispatch(AuthorizationAction(
-        email: email,
-        accessToken: response.access,
-        refreshToken: response.refresh
+        profile: profile
     ));
   } on DioException catch (e) {
     final error = e.response?.data['error'];
