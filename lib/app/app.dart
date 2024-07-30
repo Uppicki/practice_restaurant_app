@@ -13,6 +13,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 
 Widget initApp() {
   WidgetsFlutterBinding.ensureInitialized();
+
   final store = Store<AppState>(
       appReducer,
       initialState: AppState.initial(),
